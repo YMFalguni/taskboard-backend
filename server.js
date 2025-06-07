@@ -6,7 +6,7 @@ const Task = require("./models/Task");
 const User = require("./models/User");
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000; // ✅ Use dynamic port for Render
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -17,7 +17,9 @@ mongoose.connect(process.env.MONGODB_URI, {
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000", "https://taskboard-frontend.vercel.app"]
+}));
 app.use(express.json());
 
 // Root Route
@@ -25,7 +27,7 @@ app.get("/", (req, res) => {
   res.send("🚀 TaskBoard API is running!");
 });
 
-// --- Task Routes ---
+// Task Routes
 app.get("/api/tasks", async (req, res) => {
   const tasks = await Task.find();
   res.json(tasks);
@@ -47,7 +49,7 @@ app.delete("/api/tasks/:id", async (req, res) => {
   res.sendStatus(204);
 });
 
-// --- User Routes ---
+// User Routes
 app.get("/api/user", async (req, res) => {
   let user = await User.findOne();
   if (!user) {
