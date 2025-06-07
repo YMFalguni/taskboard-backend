@@ -18,12 +18,12 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:3000", "https://taskboard-frontend.vercel.app"]
+  origin: ["http://localhost:3000", "https://taskboard-frontend-pearl.vercel.app/"]
 }));
 app.use(express.json());
 
 // Root Route
-app.get("/", (req, res) => {
+app.get("/", (req, res) => {taskboard
   res.send("🚀 TaskBoard API is running!");
 });
 
